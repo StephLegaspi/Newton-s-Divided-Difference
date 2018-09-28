@@ -52,6 +52,15 @@ SetUpPolynomial <- function(x, y, m, order){
   return(term)
 }
 
+GetCoefficients <- function(y, m, order){
+  coeffs = c()
+  coeffs = c(coeffs, y[1])
+  for(i in 1:order){
+    coeffs = c(coeffs, m[1, i])
+  }
+  return(coeffs)
+}
+
 NDD <- function(x, y, order){
   if(order == length(x) || order > length(x)){
     return(NA)
@@ -61,19 +70,18 @@ NDD <- function(x, y, order){
   if(order != 1){
     m = GetOrders(x, y, order, m)
   }
-  polynomial = SetUpPolynomial(x, y, m, order)
+  poly = SetUpPolynomial(x, y, m, order)
+ 
   args = "x"
-  result = list(func = eval(parse(text = paste('function(', args, ') { return(' , polynomial , ')}', sep=''))))
-  return(result)
+  poly_func = list(coefficients = GetCoefficients(y, m, order), func = eval(parse(text = paste('function(', args, ') { return(' , poly , ')}', sep=''))))
+  return(poly_func)
   
 }
 
-x = c(1, 3, 5)
-y = c(0, 1.0986, 1.6094)
-
-#x = c(8, 9, 11, 12)
-#y = c(0.9031, 0.9542, 1.0414, 1.0792)
-result = NDD(x, y, 2)
-#print(result)
-print(result$func(2))
+x = c(8, 9, 11, 12)
+y = c(0.9031, 0.9542, 1.0414, 1.0792)
+result_final = NDD(x, y, 3)
+#print(result_final)
+print(result_final$coefficients)
+print(result_final$func(10))
 
