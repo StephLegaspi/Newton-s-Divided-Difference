@@ -1,5 +1,3 @@
-x = c(8, 9, 11, 12)
-y = c(0.9031, 0.9542, 1.0414, 1.0792)
 
 RowColNames <- function(size){
   rcnames = c()
@@ -55,18 +53,27 @@ SetUpPolynomial <- function(x, y, m, order){
 }
 
 NDD <- function(x, y, order){
+  if(order == length(x) || order > length(x)){
+    return(NA)
+  }
   m = matrix(data=NA, nrow=order, ncol=order, dimnames = list(RowColNames(order), RowColNames(order)))
   m = FirstOrder(x, y, order, m)
   if(order != 1){
     m = GetOrders(x, y, order, m)
   }
   polynomial = SetUpPolynomial(x, y, m, order)
-  args <- "x"
-  result = list(func = eval(parse(text = paste('f <- function(', args, ') { return(' , polynomial , ')}', sep=''))))
+  args = "x"
+  result = list(func = eval(parse(text = paste('function(', args, ') { return(' , polynomial , ')}', sep=''))))
   return(result)
   
 }
 
-result = NDD(x, y, 3)
-print(result$func(10))
+x = c(1, 3, 5)
+y = c(0, 1.0986, 1.6094)
+
+#x = c(8, 9, 11, 12)
+#y = c(0.9031, 0.9542, 1.0414, 1.0792)
+result = NDD(x, y, 2)
+#print(result)
+print(result$func(2))
 
