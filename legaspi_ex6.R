@@ -12,7 +12,6 @@ FirstOrder <- function(x, y, order, m){
   for (i in 1:order) {
     fo = (y[i+1] - y[i])/(x[i+1] - x[i])
     m[i, col] = fo
-    #print(fo)
   }
   return(m)
 }
@@ -78,10 +77,14 @@ NDD <- function(x, y, order){
   
 }
 
-x = c(8, 9, 11, 12)
-y = c(0.9031, 0.9542, 1.0414, 1.0792)
-result_final = NDD(x, y, 3)
-#print(result_final)
-print(result_final$coefficients)
-print(result_final$func(10))
+x = c(0, 8, 16, 24, 32, 40)
+y = c(14.621, 11.843, 9.870, 8.418, 7.305, 6.413)
+result_final = NDD(x, y, 5)
+if(is.na(result_final[1])){
+  print(result_final)
+}else{
+  print(result_final$coefficients)
+  print(result_final$func(27))
+}
+
 
