@@ -70,7 +70,7 @@ NDD <- function(x, y, order){
     m = GetOrders(x, y, order, m)
   }
   poly = SetUpPolynomial(x, y, m, order)
- 
+  print(poly)
   args = "x"
   poly_func = list(coefficients = GetCoefficients(y, m, order), func = eval(parse(text = paste('function(', args, ') { return(' , poly , ')}', sep=''))))
   return(poly_func)
@@ -79,6 +79,8 @@ NDD <- function(x, y, order){
 
 x = c(0, 8, 16, 24, 32, 40)
 y = c(14.621, 11.843, 9.870, 8.418, 7.305, 6.413)
+
+
 result_final = NDD(x, y, 5)
 if(is.na(result_final[1])){
   print(result_final)
@@ -86,5 +88,15 @@ if(is.na(result_final[1])){
   print(result_final$coefficients)
   print(result_final$func(27))
 }
+
+exerdata =  list(x, y)
+
+plot(x, y, pch = 20, col = "red", main = "T°C vs. o, mg/L", xlab =
+       "T°C", ylab = "o, mg/L")
+linearModel = lm(y ~ poly(x, 5, raw=TRUE), data = exerdata)
+lines(x, predict(linearModel), col = "blue")
+
+linearModel = lm(y ~ x, data = exerdata)
+lines(x, predict(linearModel), col = "green")
 
 
